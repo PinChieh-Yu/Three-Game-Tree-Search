@@ -81,6 +81,8 @@ public:
 		// TODO: explore the tree and save the result
 		table = new answer[800000000];
 		build_tree(0, 0, 0, 0, 0, 0, 1, 1, 1, 0, slide_up);
+		build_tree(0, 0, 0, 0, 0, 0, 1, 1, 1, 1, slide_up);
+		build_tree(0, 0, 0, 0, 0, 0, 1, 1, 1, 2, slide_up);
 	}
 
 	~solver () {
@@ -125,11 +127,11 @@ private:
 			float max = -1.0;
 			//try to slide
 
-			std::cout << "Before" << std::endl;
+			//std::cout << "Before" << std::endl;
 			for(int way = 0; way < 4; way++){
 				reward = b.slide(way);
 				if (reward != -1) {
-					std::cout << "slide:" << (action)way << ", Board:" << std::endl << b << std::endl;
+					//std::cout << "slide:" << (action)way << ", Board:" << std::endl << b << std::endl;
 					tag = 0;
 					ans = build_tree(b(0), b(1), b(2), b(3), b(4), b(5), bag0, bag1, bag2, hint, (action)way);
 					if (ans.avg > max) {
@@ -141,7 +143,7 @@ private:
 			}
 			if (tag) {
 				result = answer(b.score(), b.score(), b.score());
-				std::cout << "End:" << result.avg << ", Board:" << std::endl << b << std::endl;
+				//std::cout << "End:" << result.avg << ", Board:" << std::endl << b << std::endl;
 			}
 		} else { // after state
 			int bag[3] = {bag0, bag1, bag2};
@@ -158,7 +160,7 @@ private:
 				start = 2; end = 5; plus = 3;
 			}
 
-			std::cout << "After, hint:" << hint+1 << std::endl;
+			//std::cout << "After, hint:" << hint+1 << std::endl;
 			bag[hint] = 0;
 			if (!bag[0] && !bag[1] && !bag[2]) {
 				bag[0] = bag[1] = bag[2] = 1;
@@ -166,7 +168,7 @@ private:
 			for (int i = start; i <= end; i+=plus) {
 				if (!b(i)) {
 					b(i) = hint+1;
-					std::cout << "Place At:" << i << ", Board:" << std::endl << b << std::endl;
+					//std::cout << "Place At:" << i << ", Board:" << std::endl << b << std::endl;
 					for (int j = 0; j < 3; j++) {
 						if (bag[j]) {
 							ans = build_tree(b(0), b(1), b(2), b(3), b(4), b(5), bag[0], bag[1], bag[2], j, place);
@@ -180,11 +182,11 @@ private:
 				}
 			}
 			result.avg /= count;
-			std::cout << "Ans:" << result << std::endl;
+			//std::cout << "Ans:" << result << std::endl;
 		}
 
 		index = hash(t0, t1, t2, t3, t4, t5, hint, last_act);
-		std::cout << "Index:" << index << std::endl;
+		//std::cout << "Index:" << index << std::endl;
 		table[index] = result;
 		return result;
 	}
